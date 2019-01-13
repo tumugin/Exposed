@@ -100,6 +100,22 @@ test {
     }
 }
 
+project(":spring-transaction") {
+    apply plugin: 'kotlin'
+
+    dependencies {
+        compile "org.springframework:spring-jdbc:$spring_version"
+        compile "org.springframework:spring-context:$spring_version"
+        compile rootProject
+        testCompile "org.springframework:spring-test:$spring_version"
+    }
+
+    task sourcesJar(type: Jar, dependsOn: classes) {
+        classifier = 'sources'
+        from sourceSets.main.allSource
+    }
+}
+
 publishing {
     publications {
         exposed(MavenPublication) {
@@ -132,10 +148,9 @@ bintray {
 
 afterReleaseBuild.dependsOn bintrayUpload
 
-task wrapper(type: Wrapper) {
-    gradleVersion = "4.10.2"
+wrapper{
+    gradleVersion = '5.1'
 }
-
 
 allprojects {
     apply plugin: 'kotlin'
@@ -167,22 +182,6 @@ allprojects {
     }
 }
 
-
-project(":spring-transaction") {
-    apply plugin: 'kotlin'
-
-    dependencies {
-        compile "org.springframework:spring-jdbc:$spring_version"
-        compile "org.springframework:spring-context:$spring_version"
-        compile rootProject
-        testCompile "org.springframework:spring-test:$spring_version"
-    }
-
-    task sourcesJar(type: Jar, dependsOn: classes) {
-        classifier = 'sources'
-        from sourceSets.main.allSource
-    }
-}
 /*
 kotlin {
     experimental {
